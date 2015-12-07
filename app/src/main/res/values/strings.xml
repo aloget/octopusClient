@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">octopuschat</string>
+
+    <string name="action_exit">Exit</string>
+    <string name="buttonLoginLabel">Войти</string>
+    <string name="buttonRegisterLabel">Зарегистрироваться</string>
+    <string name="title_users_activity">Все пользователи</string>
+
+</resources>

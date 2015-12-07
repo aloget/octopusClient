@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#009688">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editTextUsername"
+        android:inputType="text"
+        android:layout_above="@+id/editTextPassword"
+        android:layout_alignLeft="@+id/editTextPassword"
+        android:layout_alignStart="@+id/editTextPassword"
+        android:layout_alignRight="@+id/buttonRegister"
+        android:layout_alignEnd="@+id/buttonRegister" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/editTextPassword"
+        android:layout_centerVertical="true"
+        android:layout_alignLeft="@+id/buttonRegister"
+        android:layout_alignStart="@+id/buttonRegister"
+        android:layout_alignRight="@+id/buttonRegister"
+        android:layout_alignEnd="@+id/buttonRegister" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonLoginLabel"
+        android:id="@+id/buttonLogin"
+        android:layout_below="@+id/editTextPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="39dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/buttonRegisterLabel"
+        android:id="@+id/buttonRegister"
+        android:layout_below="@+id/buttonLogin"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
