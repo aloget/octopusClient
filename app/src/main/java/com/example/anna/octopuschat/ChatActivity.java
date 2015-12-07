@@ -54,20 +54,18 @@ public class ChatActivity extends Activity implements MessagesListener {
 
         getMessages();
         if (APIManager.isConnectionAvailable()) {
-            getMessagesFromServer();
+            Timer timer = new Timer();
+            TimerTask timerTask = new TimerTask() {
+                public void run() {
+                    getMessagesFromServer();
+                }
+            };
+            timer.scheduleAtFixedRate(timerTask, 0, 2000);
         } else {
-            Toast.makeText(this, "Соединение недоступно.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Интернет-соединение отсутствует.", Toast.LENGTH_LONG).show();
         }
 
-        Timer timer = new Timer();
-        TimerTask timerTask;
 
-        timerTask = new TimerTask() {
-            public void run() {
-                getMessagesFromServer();
-            }
-        };
-        timer.scheduleAtFixedRate(timerTask, 0, 2000);
 
         listViewAdapter = new MessageAdapter(this, getMessages());
         listView.setAdapter(listViewAdapter);
@@ -108,7 +106,7 @@ public class ChatActivity extends Activity implements MessagesListener {
 
     @Override
     public void onGetMessagesFailure(int code, String errorMessage) {
-        Toast.makeText(this, "Ошибка получения сообщений.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -118,6 +116,6 @@ public class ChatActivity extends Activity implements MessagesListener {
 
     @Override
     public void onPostMessagesFailure(int code, String errorMessage) {
-        Toast.makeText(this, "Ошибка отправки сообщения.", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 }
