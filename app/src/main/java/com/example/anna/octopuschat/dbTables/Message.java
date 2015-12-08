@@ -19,11 +19,8 @@ public class Message extends Model {
     @Column(name = "messageId")
     public int messageId;
 
-    @Column(name = "senderId")
-    public int senderId;
-
-    @Column(name = "recipientId")
-    public int recipientId;
+    @Column(name = "contactId")
+    public int contactId;
 
     @Column(name = "message")
     public String message;
@@ -31,43 +28,26 @@ public class Message extends Model {
     @Column(name = "dispatchTimestamp")
     public long dispatchTimestamp;
 
-    @Column(name = "messageIndex")
-    public int messageIndex;
+    @Column(name = "inbox")
+    public boolean inbox;
 
     public Message() {
         super();
     }
 
-    public Message(int messageId, int senderId, int recipientId, String message, long dispatchTimestamp, int messageIndex) {
+    public Message(int messageId, int contactId, String message, long dispatchTimestamp, boolean inbox) {
         super();
         this.messageId = messageId;
-        this.senderId = senderId;
-        this.recipientId = recipientId;
+        this.contactId = contactId;
         this.message = message;
         this.dispatchTimestamp = dispatchTimestamp;
-        this.messageIndex = messageIndex;
+        this.inbox = inbox;
     }
 
-    public void createOrUpdate() {
-        Message message = Message.getMessage(this.messageId);
-        if (message != null) {
-            message.messageId = this.messageId;
-            message.senderId = this.senderId;
-            message.recipientId = this.recipientId;
-            message.message = this.message;
-            message.dispatchTimestamp = this.dispatchTimestamp;
-            message.messageIndex = this.messageIndex;
-            message.save();
-        } else {
-            this.save();
-        }
-    }
-
-    public static List<Message> getMessages(int firstUserId, int secondUserId) {
+    public static List<Message> getMessages(int contactId) {
         return new Select()
                 .from(Message.class)
-                .where("(senderId = ? and recipientId = ?) or (senderId = ? and recipientId = ?)",
-                        firstUserId, secondUserId, secondUserId, firstUserId)
+                .where("contactId = ?", contactId)
                 .execute();
     }
 
@@ -81,13 +61,15 @@ public class Message extends Model {
     public static Message getMessage(JSONObject json) {
         try {
             int id = json.getInt("id");
-            int senderId = json.getInt("sender_id");
-            int recipientId = json.getInt("recipient_id");
+            int contactId = json.getInt("recipientId");
+            boolean inbox = false;
+            if (contactId == Profile.getProfile().userId) {
+                contactId = json.getInt("senderId");
+                inbox = true;
+            }
             String message = json.getString("message");
-            int dispatchTimestamp = json.getInt("dispatch_timestamp");
-            int messageIdx = json.getInt("message_index");
-            return new Message(id, senderId, recipientId, message, dispatchTimestamp, messageIdx);
-
+            int dispatchTimestamp = json.getInt("dispatchTimestamp");
+            return new Message(id, contactId, message, dispatchTimestamp, inbox);
         } catch (JSONException e) {
             e.printStackTrace();
         }

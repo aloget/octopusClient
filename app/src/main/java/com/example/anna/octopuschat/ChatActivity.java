@@ -2,6 +2,7 @@ package com.example.anna.octopuschat;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,86 +18,90 @@ import com.example.anna.octopuschat.interfaces.MessagesListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by anna on 06/12/15.
  */
 public class ChatActivity extends Activity implements MessagesListener {
-
+    private Handler handler = new Handler() {
+        @Override
+        public void dispatchMessage(android.os.Message msg) {
+            super.dispatchMessage(msg);
+            getMessagesFromServer();
+            if (!isDestroy)
+                handler.sendEmptyMessageDelayed(0, 2000);
+        }
+    };
     private ListView listView;
-    private MessageAdapter listViewAdapter;
-    private User companion;
+    private MessageAdapter messageAdapter;
+    private User mContact;
     private EditText editTextMessage;
-
+    private boolean isDestroy = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        int companion_id = getIntent().getIntExtra("companion_id", -1);
-        companion = User.getUser(companion_id);
+        int contact_id = getIntent().getIntExtra("contact_id", -1);
+        mContact = User.getUser(contact_id);
 
         listView = (ListView) findViewById(R.id.listView2);
         editTextMessage = (EditText) findViewById(R.id.editTextMessage);
 
-        Button postMessageButton = (Button)findViewById(R.id.buttonPost);
+        Button postMessageButton = (Button) findViewById(R.id.buttonPost);
         postMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (editTextMessage.getText().length() > 0) {
                     postMessage();
+                    editTextMessage.getText().clear();
                 }
             }
         });
 
-        getMessages();
         if (APIManager.isConnectionAvailable()) {
-            Timer timer = new Timer();
-            TimerTask timerTask = new TimerTask() {
-                public void run() {
-                    getMessagesFromServer();
-                }
-            };
-            timer.scheduleAtFixedRate(timerTask, 0, 2000);
+            handler.sendEmptyMessage(0);
         } else {
             Toast.makeText(this, "Интернет-соединение отсутствует.", Toast.LENGTH_LONG).show();
         }
 
+        messageAdapter = new MessageAdapter(this, getMessages());
+        listView.setAdapter(messageAdapter);
+    }
 
-
-        listViewAdapter = new MessageAdapter(this, getMessages());
-        listView.setAdapter(listViewAdapter);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isDestroy = true;
     }
 
     private List<MessageAdapter.Item> getMessages() {
         List<MessageAdapter.Item> result = new ArrayList<>();
-        List<Message> messageList = Message.getMessages(Profile.getProfile().userId, companion.userId);
+        List<Message> messageList = Message.getMessages(mContact.userId);
         for (Message message : messageList) {
-            User user = User.getUser(message.senderId);
-            MessageAdapter.Item item = new MessageAdapter.Item(message.getId().intValue(), user, message.message, message.dispatchTimestamp);
+            String username = message.inbox ? User.getUser(message.contactId).username : Profile.getProfile().username;
+            MessageAdapter.Item item = new MessageAdapter.Item(message.getId().intValue(), username, message.message, message.dispatchTimestamp);
             result.add(item);
         }
         return result;
     }
 
-    private void updateMessages(ArrayList<Message>messages) {
+    private void updateMessages(ArrayList<Message> messages) {
         for (Message newMessage : messages) {
-            User user = User.getUser(newMessage.senderId);
-            MessageAdapter.Item item = new MessageAdapter.Item(newMessage.getId().intValue(), user, newMessage.message, newMessage.dispatchTimestamp);
-            listViewAdapter.add(item);
+            String username = newMessage.inbox ? User.getUser(newMessage.contactId).username : Profile.getProfile().username;
+            MessageAdapter.Item item = new MessageAdapter.Item(newMessage.getId().intValue(), username, newMessage.message, newMessage.dispatchTimestamp);
+            messageAdapter.add(item);
         }
     }
 
     private void getMessagesFromServer() {
-        APIManager.getInstance().getMessages(companion.userId, companion.lastMessageIndex, this);
+        APIManager.getInstance().getMessages(mContact.userId, mContact.lastMessageIndex, this);
     }
 
     private void postMessage() {
-            APIManager.getInstance().postMessage(companion.userId, companion.lastMessageIndex,
-                    editTextMessage.getText().toString(), this);
+        APIManager.getInstance().postMessage(mContact.userId, mContact.lastMessageIndex,
+                editTextMessage.getText().toString(), this);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.anna.octopuschat.API.APIManager;
+import com.example.anna.octopuschat.dbTables.Profile;
 import com.example.anna.octopuschat.interfaces.AuthorizeListener;
 import com.example.anna.octopuschat.interfaces.RegisterListener;
 
@@ -29,6 +30,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
 
         buttonLogin.setOnClickListener(this);
         buttonRegister.setOnClickListener(this);
+
+        Profile profile = Profile.getProfile();
+        if (profile != null) {
+            APIManager.getInstance().authorize(profile.username, profile.password, this);
+        }
     }
 
 
@@ -86,5 +92,4 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
     public void onAuthorizeFailure(int code, String errorMessage) {
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
-
 }

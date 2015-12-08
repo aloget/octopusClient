@@ -8,7 +8,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.example.anna.octopuschat.R;
-import com.example.anna.octopuschat.dbTables.User;
 
 import java.sql.Timestamp;
 import java.util.Date;
@@ -34,13 +33,13 @@ public class MessageAdapter extends ArrayAdapter<MessageAdapter.Item> {
 
     public static class Item {
         public int mId;
-        public User mSender;
+        public String mUsername;
         public String mMessage;
         public Date mDate;
 
-        public Item(int id, User sender, String message, long dispatchTimestamp) {
+        public Item(int id, String username, String message, long dispatchTimestamp) {
             mId = id;
-            mSender = sender;
+            mUsername = username;
             mMessage = message;
 
             Timestamp timestamp = new Timestamp(dispatchTimestamp);
@@ -67,7 +66,7 @@ public class MessageAdapter extends ArrayAdapter<MessageAdapter.Item> {
 
         Item item = getItem(position);
 
-        holder.sender.setText(item.mSender.username);
+        holder.sender.setText(item.mUsername);
         holder.message.setText(item.mMessage);
         holder.date.setText(item.mDate.toString());
         return rowView;

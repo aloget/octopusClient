@@ -70,7 +70,7 @@ public class User extends Model {
         try {
             int id = json.getInt("id");
             String username = json.getString("username");
-            int lastMessageIdx = json.getInt("last_message_index");
+            int lastMessageIdx = json.optInt("last_message_index", 0);
             return new User(id, username, lastMessageIdx);
 
         } catch (JSONException e) {

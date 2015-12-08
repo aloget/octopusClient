@@ -13,6 +13,8 @@ import org.json.JSONObject;
  */
 @Table(name = "profiles")
 public class Profile extends Model {
+    private static Profile sProfile;
+
     @Column(name = "userId")
     public int userId;
 
@@ -24,7 +26,6 @@ public class Profile extends Model {
 
     @Column(name = "token")
     public String token;
-
 
     public Profile() {
         super();
@@ -39,22 +40,11 @@ public class Profile extends Model {
     }
 
     public static Profile getProfile() {
-        return new Select()
-                .from(Profile.class)
-                .executeSingle();
-    }
-
-    public static Profile getProfile(JSONObject json) {
-        try {
-            int id = json.getInt("id");
-            String username = json.getString("username");
-            String password = json.getString("password");
-            String token = json.getString("token");
-            return new Profile(id, username, password, token);
-
-        } catch (JSONException e) {
-            e.printStackTrace();
+        if (sProfile == null) {
+            sProfile = new Select()
+                    .from(Profile.class)
+                    .executeSingle();
         }
-        return null;
+        return sProfile;
     }
 }

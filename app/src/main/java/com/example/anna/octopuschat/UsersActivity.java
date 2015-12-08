@@ -20,6 +20,7 @@ import com.example.anna.octopuschat.interfaces.UsersListener;
  */
 public class UsersActivity extends Activity implements AdapterView.OnItemClickListener, UsersListener {
     private ListView listView;
+    private UserAdapter mUserAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,8 +39,8 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
 
     @Override
     public void onGetUsersSuccess() {
-        UserAdapter userAdapter = new UserAdapter(this, User.getUsers());
-        listView.setAdapter(userAdapter);
+        mUserAdapter = new UserAdapter(this, User.getUsers());
+        listView.setAdapter(mUserAdapter);
     }
 
     @Override
@@ -53,7 +54,6 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_users, menu);
         return true;
     }
@@ -71,8 +71,6 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         startActivity(new Intent(this, ChatActivity.class)
-        .putExtra("companion_id", position));
-
-
+                .putExtra("contact_id", mUserAdapter.getItem(position).userId));
     }
 }
