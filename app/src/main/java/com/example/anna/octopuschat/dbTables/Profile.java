@@ -5,9 +5,6 @@ import com.activeandroid.annotation.Column;
 import com.activeandroid.annotation.Table;
 import com.activeandroid.query.Select;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by anna on 07/12/15.
  */
@@ -46,5 +43,18 @@ public class Profile extends Model {
                     .executeSingle();
         }
         return sProfile;
+    }
+
+    public static void removeProfile() {
+        getProfile().delete();
+
+        for (User user : User.getUsers()) {
+            user.delete();
+        }
+        for (Message message : Message.getMessages()) {
+            message.delete();
+        }
+
+        sProfile = null;
     }
 }

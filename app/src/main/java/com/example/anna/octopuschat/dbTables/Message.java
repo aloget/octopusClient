@@ -58,6 +58,12 @@ public class Message extends Model {
                 .executeSingle();
     }
 
+    public static List<Message> getMessages() {
+        return new Select()
+                .from(Message.class)
+                .execute();
+    }
+
     public static Message getMessage(JSONObject json) {
         try {
             int id = json.getInt("id");

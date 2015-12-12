@@ -3,7 +3,6 @@ package com.example.anna.octopuschat;
 import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,6 +45,7 @@ public class ChatActivity extends Activity implements MessagesListener {
 
         int contact_id = getIntent().getIntExtra("contact_id", -1);
         mContact = User.getUser(contact_id);
+        getActionBar().setTitle(mContact.username);
 
         listView = (ListView) findViewById(R.id.listView2);
         editTextMessage = (EditText) findViewById(R.id.et_message);

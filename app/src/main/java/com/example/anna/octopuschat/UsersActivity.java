@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.example.anna.octopuschat.API.APIManager;
 import com.example.anna.octopuschat.adapters.UserAdapter;
+import com.example.anna.octopuschat.dbTables.Profile;
 import com.example.anna.octopuschat.dbTables.User;
 import com.example.anna.octopuschat.interfaces.UsersListener;
 
@@ -62,7 +63,7 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_exit) {
-            return false;
+            logout();
         }
 
         return super.onOptionsItemSelected(item);
@@ -73,4 +74,11 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
         startActivity(new Intent(this, ChatActivity.class)
                 .putExtra("contact_id", mUserAdapter.getItem(position).userId));
     }
+
+    private void logout() {
+        Profile.removeProfile();
+        startActivity(new Intent(this, MainActivity.class));
+        finish();
+    }
+
 }
