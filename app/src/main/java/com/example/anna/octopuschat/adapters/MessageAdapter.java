@@ -40,7 +40,7 @@ public class MessageAdapter extends ArrayAdapter<MessageAdapter.Item> {
         Item item = getItem(position);
 
         if (rowView == null) {
-            rowView = mInflater.inflate(item.mInbox ? R.layout.message_list_item_r : R.layout.messages_list_item_l, parent, false);
+            rowView = mInflater.inflate(item.mInbox ? R.layout.messages_list_item_l : R.layout.messages_list_item_r, parent, false);
             holder = new ViewHolder();
 
             holder.tv_sender = (TextView) rowView.findViewById(R.id.tv_sender);

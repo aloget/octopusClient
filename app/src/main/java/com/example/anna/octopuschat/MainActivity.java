@@ -39,6 +39,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.NoActionBarAppTheme);
         setContentView(R.layout.activity_main);
         Button bt_login = (Button) findViewById(R.id.bt_login);
         Button bt_register = (Button) findViewById(R.id.bt_register);
