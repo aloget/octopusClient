@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:weightSum="1">
 
     <ListView
+        android:id="@+id/listView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listView2"
-        android:layout_weight="0.71"
         android:layout_above="@+id/relativeLayout"
         android:stackFromBottom="true" />
 
     <RelativeLayout
-        android:orientation="horizontal"
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="2dp"
-        android:paddingBottom="2dp"
-        android:paddingRight="2dp"
-        android:paddingLeft="2dp"
         android:layout_alignParentBottom="true"
-        android:id="@+id/relativeLayout">
+        android:orientation="horizontal"
+        android:paddingBottom="2dp"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:paddingTop="2dp">
 
         <EditText
+            android:id="@+id/et_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editTextMessage"
             android:layout_marginLeft="0dp"
             android:layout_marginTop="4dp"
-            android:layout_toLeftOf="@+id/button" />
+            android:layout_toLeftOf="@+id/bt_post" />
 
         <Button
+            android:id="@+id/bt_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Отпр."
-            android:id="@+id/buttonPost"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:text="Отпр." />
 
     </RelativeLayout>
 

@@ -47,9 +47,9 @@ public class ChatActivity extends Activity implements MessagesListener {
         mContact = User.getUser(contact_id);
 
         listView = (ListView) findViewById(R.id.listView2);
-        editTextMessage = (EditText) findViewById(R.id.editTextMessage);
+        editTextMessage = (EditText) findViewById(R.id.et_message);
 
-        Button postMessageButton = (Button) findViewById(R.id.buttonPost);
+        Button postMessageButton = (Button) findViewById(R.id.bt_post);
         postMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,7 +81,7 @@ public class ChatActivity extends Activity implements MessagesListener {
         List<Message> messageList = Message.getMessages(mContact.userId);
         for (Message message : messageList) {
             String username = message.inbox ? User.getUser(message.contactId).username : Profile.getProfile().username;
-            MessageAdapter.Item item = new MessageAdapter.Item(message.getId().intValue(), username, message.message, message.dispatchTimestamp);
+            MessageAdapter.Item item = new MessageAdapter.Item(message.getId().intValue(), username, message.message, message.dispatchTimestamp, message.inbox);
             result.add(item);
         }
         return result;
@@ -90,7 +90,7 @@ public class ChatActivity extends Activity implements MessagesListener {
     private void updateMessages(ArrayList<Message> messages) {
         for (Message newMessage : messages) {
             String username = newMessage.inbox ? User.getUser(newMessage.contactId).username : Profile.getProfile().username;
-            MessageAdapter.Item item = new MessageAdapter.Item(newMessage.getId().intValue(), username, newMessage.message, newMessage.dispatchTimestamp);
+            MessageAdapter.Item item = new MessageAdapter.Item(newMessage.getId().intValue(), username, newMessage.message, newMessage.dispatchTimestamp, newMessage.inbox);
             messageAdapter.add(item);
         }
     }

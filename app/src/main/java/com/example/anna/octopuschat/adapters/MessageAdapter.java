@@ -9,9 +9,10 @@ import android.widget.TextView;
 
 import com.example.anna.octopuschat.R;
 
-import java.sql.Timestamp;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by anna on 06/12/15.
@@ -26,49 +27,56 @@ public class MessageAdapter extends ArrayAdapter<MessageAdapter.Item> {
     }
 
     static class ViewHolder {
-        public TextView sender;
-        public TextView message;
-        public TextView date;
-    }
-
-    public static class Item {
-        public int mId;
-        public String mUsername;
-        public String mMessage;
-        public Date mDate;
-
-        public Item(int id, String username, String message, long dispatchTimestamp) {
-            mId = id;
-            mUsername = username;
-            mMessage = message;
-
-            Timestamp timestamp = new Timestamp(dispatchTimestamp);
-            mDate = new Date(timestamp.getTime());
-        }
+        public TextView tv_sender;
+        public TextView tv_message;
+        public TextView tv_date;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         View rowView = convertView;
-        if (rowView == null) {
-            rowView = mInflater.inflate(R.layout.messages_list_item, parent, false);
-            holder = new ViewHolder();
-
-            holder.sender = (TextView)rowView.findViewById(R.id.textViewSender);
-            holder.message = (TextView)rowView.findViewById(R.id.textViewMessage);
-            holder.date = (TextView)rowView.findViewById(R.id.textViewDate);
-
-            rowView.setTag(holder);
-        } else {
-            holder = (ViewHolder)rowView.getTag();
-        }
 
         Item item = getItem(position);
 
-        holder.sender.setText(item.mUsername);
-        holder.message.setText(item.mMessage);
-        holder.date.setText(item.mDate.toString());
+        if (rowView == null) {
+            rowView = mInflater.inflate(item.mInbox ? R.layout.message_list_item_r : R.layout.messages_list_item_l, parent, false);
+            holder = new ViewHolder();
+
+            holder.tv_sender = (TextView) rowView.findViewById(R.id.tv_sender);
+            holder.tv_message = (TextView) rowView.findViewById(R.id.tv_message);
+            holder.tv_date = (TextView) rowView.findViewById(R.id.tv_date);
+
+            rowView.setTag(holder);
+        } else {
+            holder = (ViewHolder) rowView.getTag();
+        }
+
+
+        holder.tv_sender.setText(item.mUsername);
+        holder.tv_message.setText(item.mMessage);
+        holder.tv_date.setText(item.mDate);
         return rowView;
+    }
+
+    public static class Item {
+        private int mId;
+        private String mUsername;
+        private String mMessage;
+        private String mDate;
+        private boolean mInbox;
+
+        public Item(int id, String username, String message, long dispatchTimestamp, boolean inbox) {
+            mId = id;
+            mUsername = username;
+            mMessage = message;
+            mInbox = inbox;
+
+            Calendar calendar = GregorianCalendar.getInstance(Locale.getDefault());
+            calendar.setTimeInMillis(dispatchTimestamp * 1000);
+            mDate = String.format("%d:%d:%d %d.%d.%d",
+                    calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), calendar.get(Calendar.SECOND),
+                    calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
+        }
     }
 }

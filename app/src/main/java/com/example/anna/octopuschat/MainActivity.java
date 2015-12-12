@@ -3,6 +3,8 @@ package com.example.anna.octopuschat;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,45 +16,53 @@ import com.example.anna.octopuschat.interfaces.AuthorizeListener;
 import com.example.anna.octopuschat.interfaces.RegisterListener;
 
 public class MainActivity extends Activity implements View.OnClickListener, RegisterListener, AuthorizeListener {
+    private EditText et_username;
+    private EditText et_password;
 
-
-    private EditText editTextUsername;
-    private EditText editTextPassword;
+    private Handler handler = new Handler() {
+        @Override
+        public void dispatchMessage(Message msg) {
+            super.dispatchMessage(msg);
+            Profile profile = Profile.getProfile();
+            if (profile != null) {
+                APIManager.getInstance().authorize(profile.username, profile.password, MainActivity.this);
+            } else {
+                findViewById(R.id.rl_content).setVisibility(View.VISIBLE);
+                findViewById(R.id.iv_splash).setVisibility(View.INVISIBLE);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        Button buttonRegister = (Button) findViewById(R.id.buttonRegister);
-        editTextUsername = (EditText) findViewById(R.id.editTextUsername);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
+        Button bt_login = (Button) findViewById(R.id.bt_login);
+        Button bt_register = (Button) findViewById(R.id.bt_register);
+        et_username = (EditText) findViewById(R.id.et_username);
+        et_password = (EditText) findViewById(R.id.et_password);
 
-        buttonLogin.setOnClickListener(this);
-        buttonRegister.setOnClickListener(this);
+        bt_login.setOnClickListener(this);
+        bt_register.setOnClickListener(this);
 
-        Profile profile = Profile.getProfile();
-        if (profile != null) {
-            APIManager.getInstance().authorize(profile.username, profile.password, this);
-        }
+        handler.sendEmptyMessageDelayed(0, 2000);
     }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.buttonLogin:
+            case R.id.bt_login:
                 authorize();
                 break;
-            case R.id.buttonRegister:
+            case R.id.bt_register:
                 register();
                 break;
         }
     }
 
     private void authorize() {
-        String username = editTextUsername.getText().toString();
-        String password = editTextPassword.getText().toString();
+        String username = et_username.getText().toString();
+        String password = et_password.getText().toString();
 
         if (username.length() > 0 && password.length() > 0) {
             APIManager.getInstance().authorize(username, password, this);
@@ -60,8 +70,8 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
     }
 
     private void register() {
-        String username = editTextUsername.getText().toString();
-        String password = editTextPassword.getText().toString();
+        String username = et_username.getText().toString();
+        String password = et_password.getText().toString();
 
         if (username.length() > 0 && password.length() > 0) {
             APIManager.getInstance().register(username, password, this);

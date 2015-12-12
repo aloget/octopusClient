@@ -1,47 +1,59 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
     android:background="#009688">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editTextUsername"
-        android:inputType="text"
-        android:layout_above="@+id/editTextPassword"
-        android:layout_alignLeft="@+id/editTextPassword"
-        android:layout_alignStart="@+id/editTextPassword"
-        android:layout_alignRight="@+id/buttonRegister"
-        android:layout_alignEnd="@+id/buttonRegister" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/rl_content"
+        android:visibility="invisible">
 
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:id="@+id/editTextPassword"
-        android:layout_centerVertical="true"
-        android:layout_alignLeft="@+id/buttonRegister"
-        android:layout_alignStart="@+id/buttonRegister"
-        android:layout_alignRight="@+id/buttonRegister"
-        android:layout_alignEnd="@+id/buttonRegister" />
+        <EditText
+            android:id="@+id/et_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/et_password"
+            android:layout_alignEnd="@+id/bt_register"
+            android:layout_alignLeft="@+id/et_password"
+            android:layout_alignRight="@+id/bt_register"
+            android:layout_alignStart="@+id/et_password"
+            android:inputType="text" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonLoginLabel"
-        android:id="@+id/buttonLogin"
-        android:layout_below="@+id/editTextPassword"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="39dp" />
+        <EditText
+            android:id="@+id/et_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@+id/bt_register"
+            android:layout_alignLeft="@+id/bt_register"
+            android:layout_alignRight="@+id/bt_register"
+            android:layout_alignStart="@+id/bt_register"
+            android:layout_centerVertical="true"
+            android:ems="10"
+            android:inputType="textPassword" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonRegisterLabel"
-        android:id="@+id/buttonRegister"
-        android:layout_below="@+id/buttonLogin"
-        android:layout_centerHorizontal="true" />
+        <Button
+            android:id="@+id/bt_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="39dp"
+            android:text="@string/buttonLoginLabel" />
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/bt_register"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/bt_login"
+            android:layout_centerHorizontal="true"
+            android:text="@string/buttonRegisterLabel" />
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_splash"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/octopus" />
+</FrameLayout>
