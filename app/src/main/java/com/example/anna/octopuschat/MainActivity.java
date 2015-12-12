@@ -19,16 +19,19 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
     private EditText et_username;
     private EditText et_password;
 
+    private boolean isDestroy;
+
     private Handler handler = new Handler() {
         @Override
         public void dispatchMessage(Message msg) {
             super.dispatchMessage(msg);
-            Profile profile = Profile.getProfile();
-            if (profile != null) {
-                APIManager.getInstance().authorize(profile.username, profile.password, MainActivity.this);
-            } else {
-                findViewById(R.id.rl_content).setVisibility(View.VISIBLE);
-                findViewById(R.id.iv_splash).setVisibility(View.INVISIBLE);
+            if (!isDestroy) {
+                Profile profile = Profile.getProfile();
+                if (profile != null) {
+                    APIManager.getInstance().authorize(profile.username, profile.password, MainActivity.this);
+                } else {
+                    hideSplash();
+                }
             }
         }
     };
@@ -46,6 +49,12 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
         bt_register.setOnClickListener(this);
 
         handler.sendEmptyMessageDelayed(0, 2000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        isDestroy = true;
     }
 
     @Override
@@ -83,6 +92,11 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
         finish();
     }
 
+    private void hideSplash() {
+        findViewById(R.id.rl_content).setVisibility(View.VISIBLE);
+        findViewById(R.id.iv_splash).setVisibility(View.INVISIBLE);
+    }
+
     @Override
     public void onRegisterSuccess() {
         startUsersActivity();
@@ -100,6 +114,7 @@ public class MainActivity extends Activity implements View.OnClickListener, Regi
 
     @Override
     public void onAuthorizeFailure(int code, String errorMessage) {
+        hideSplash();
         Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
     }
 }

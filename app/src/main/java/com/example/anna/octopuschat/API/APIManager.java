@@ -250,7 +250,7 @@ public class APIManager {
                     e.printStackTrace();
                 }
                 if (listener != null) {
-                    listener.onGetMessagesSuccess(messages);
+                    listener.onPostMessagesSuccess(messages);
                 }
             }
 
