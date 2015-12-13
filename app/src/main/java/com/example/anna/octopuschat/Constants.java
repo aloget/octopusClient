@@ -7,5 +7,4 @@ public class Constants {
 
     public static final String BASE_API_ADDRESS = "http://77.37.157.227/api/";
 
-
 }

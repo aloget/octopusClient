@@ -3,7 +3,6 @@ package com.example.anna.octopuschat.API;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.util.Log;
 
 import com.example.anna.octopuschat.Constants;
 import com.example.anna.octopuschat.dbTables.Message;
@@ -89,11 +88,7 @@ public class APIManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 if (listener != null) {
-                    try {
-                        listener.onRegisterFailure(statusCode, errorResponse.getString("error"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                        listener.onRegisterFailure(statusCode, errorResponse.optString("error", "Ошибка!"));
                 }
             }
         });
@@ -128,11 +123,7 @@ public class APIManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 if (listener != null) {
-                    try {
-                        listener.onAuthorizeFailure(statusCode, errorResponse.getString("error"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    listener.onAuthorizeFailure(statusCode, errorResponse.optString("error", "Ошибка!"));
                 }
             }
         });
@@ -161,11 +152,7 @@ public class APIManager {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 if (listener != null) {
-                    try {
-                        listener.onGetUsersFailure(statusCode, errorResponse.getString("error"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                    listener.onGetUsersFailure(statusCode, errorResponse.optString("error", "Ошибка!"));
                 }
             }
         });
@@ -210,10 +197,8 @@ public class APIManager {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                try {
-                    Log.w("GET_MESSAGES", errorResponse.getString("error"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (listener != null) {
+                    listener.onGetMessagesFailure(statusCode, errorResponse.optString("error", "Ошибка!"));
                 }
             }
         });
@@ -256,10 +241,8 @@ public class APIManager {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                try {
-                    Log.w("POST_MESSAGE", errorResponse.getString("error"));
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if (listener != null) {
+                    listener.onPostMessagesFailure(statusCode, errorResponse.optString("error", "Ошибка!"));
                 }
             }
         });

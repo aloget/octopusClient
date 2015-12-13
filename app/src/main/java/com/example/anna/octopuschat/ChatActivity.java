@@ -113,7 +113,7 @@ public class ChatActivity extends Activity implements MessagesListener {
 
     @Override
     public void onGetMessagesFailure(int code, String errorMessage) {
-        Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, errorMessage + " " + String.valueOf(code), Toast.LENGTH_LONG).show();
     }
 
     @Override

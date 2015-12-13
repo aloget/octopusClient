@@ -1,41 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.anna.octopuschat">
+    package="com.example.anna.octopuschat" >
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme">
-
+        android:theme="@style/AppTheme" >
         <meta-data
             android:name="AA_DB_NAME"
             android:value="database.db" />
-
         <meta-data
             android:name="AA_DB_VERSION"
             android:value="1" />
 
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:name=".SplashActivity"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".UsersActivity"
-            android:label="@string/title_users_activity"/>
-
-        <activity android:name=".ChatActivity"/>
-
+            android:label="@string/title_users_activity" />
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".MainActivity" android:windowSoftInputMode="adjustResize"/>
     </application>
 
 </manifest>
