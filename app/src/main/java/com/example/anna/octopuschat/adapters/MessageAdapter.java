@@ -19,7 +19,7 @@ import java.util.Locale;
  */
 
 public class MessageAdapter extends ArrayAdapter<MessageAdapter.Item> {
-    private LayoutInflater mInflater;
+    private final LayoutInflater mInflater;
 
     public MessageAdapter(Context context, List<Item> list) {
         super(context, 0, list);
@@ -51,7 +51,6 @@ public class MessageAdapter extends ArrayAdapter<MessageAdapter.Item> {
         } else {
             holder = (ViewHolder) rowView.getTag();
         }
-
 
         holder.tv_sender.setText(item.mUsername);
         holder.tv_message.setText(item.mMessage);

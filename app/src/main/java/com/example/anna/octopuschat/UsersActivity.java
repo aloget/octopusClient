@@ -62,7 +62,7 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_exit) {
+        if (id == R.id.action_logout) {
             logout();
         }
 
@@ -80,5 +80,4 @@ public class UsersActivity extends Activity implements AdapterView.OnItemClickLi
         startActivity(new Intent(this, MainActivity.class));
         finish();
     }
-
 }

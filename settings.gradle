@@ -1,1 +1,1 @@
-include ':app', 'submodules:ActiveAndroid'
+include 'submodules:ActiveAndroid', ':submodules:ActiveAndroid', ':app', ':submodules'
